@@ -58,6 +58,12 @@ ifneq ($(dtbo-y),)
 include scripts/Makefile.dtbo
 endif
 
+# Do not include userprogs rules unless needed.
+userprogs := $(sort $(userprogs))
+ifneq ($(userprogs),)
+include scripts/Makefile.userprogs
+endif
+
 ifndef obj
 $(warning kbuild: Makefile.build is included improperly)
 endif
