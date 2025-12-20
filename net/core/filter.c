@@ -18,6 +18,7 @@
  */
 
 #include <linux/module.h>
+#include <linux/timekeeping.h>
 #include <linux/types.h>
 #include <linux/mm.h>
 #include <linux/fcntl.h>
@@ -1757,6 +1758,9 @@ static const struct bpf_func_proto bpf_skb_load_bytes_proto = {
 	.arg3_type	= ARG_PTR_TO_UNINIT_MEM,
 	.arg4_type	= ARG_CONST_SIZE,
 };
+
+extern const struct bpf_func_proto bpf_ktime_get_boot_ns_proto;
+
 
 BPF_CALL_4(bpf_flow_dissector_load_bytes,
 	   const struct bpf_flow_dissector *, ctx, u32, offset,
@@ -7180,6 +7184,8 @@ static const struct bpf_func_proto *
 tc_cls_act_func_proto(enum bpf_func_id func_id, const struct bpf_prog *prog)
 {
 	switch (func_id) {
+	case BPF_FUNC_ktime_get_boot_ns:
+		return &bpf_ktime_get_boot_ns_proto;
 	case BPF_FUNC_skb_store_bytes:
 		return &bpf_skb_store_bytes_proto;
 	case BPF_FUNC_skb_load_bytes:
